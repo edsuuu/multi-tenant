@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Edsu MultiTenant',
             'email' => 'edsu@multitenant.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('w1971w'),
+            'password' => bcrypt('123456'),
         ]);
 
         User::factory()->create([
@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Edsu SemMultiTenant',
             'email' => 'edsu@semmultitenant.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('w1971w'),
+            'password' => bcrypt('123456'),
         ]);
     }
 }
