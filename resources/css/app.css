@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    /*--font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',*/
+    /*    'Segoe UI Symbol', 'Noto Color Emoji'; */
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-blue-black: #043873;
+    --color-blue-white: #4F9CF9;
+    --color-blue-link: #0084ff;
+    --color-blue-button: #043873dd;
+    --color-blue-hovers: #0f6bff;
+    --color-white-color: #fff;
+    --color-white-opaco: #ECE9E9;
+    --color-border-gray: #0000005f;
+    --color-gray-text: #8795ae;
+    --color-error-message: #EF4444;
+    --color-blue-for-complete: #4388F7;
+}
+
+.spinner {
+    -webkit-animation: rotator 1.4s linear infinite;
+    animation: rotator 1.4s linear infinite;
+}
+
+@-webkit-keyframes rotator {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(270deg);
+        transform: rotate(270deg);
+    }
+}
+
+@keyframes rotator {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(270deg);
+        transform: rotate(270deg);
+    }
+}
+.path {
+    stroke-dasharray: 187;
+    stroke-dashoffset: 0;
+    -webkit-transform-origin: center;
+    -ms-transform-origin: center;
+    transform-origin: center;
+    -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+    animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+}
+
+@-webkit-keyframes colors {
+    0% {
+        stroke: #4285F4;
+    }
+    25% {
+        stroke: #DE3E35;
+    }
+    50% {
+        stroke: #F7C223;
+    }
+    75% {
+        stroke: #1B9A59;
+    }
+    100% {
+        stroke: #4285F4;
+    }
+}
+
+@keyframes colors {
+    0% {
+        stroke: #4285F4;
+    }
+    25% {
+        stroke: #DE3E35;
+    }
+    50% {
+        stroke: #F7C223;
+    }
+    75% {
+        stroke: #1B9A59;
+    }
+    100% {
+        stroke: #4285F4;
+    }
+}
+@-webkit-keyframes dash {
+    0% {
+        stroke-dashoffset: 187;
+    }
+    50% {
+        stroke-dashoffset: 46.75;
+        -webkit-transform: rotate(135deg);
+        transform: rotate(135deg);
+    }
+    100% {
+        stroke-dashoffset: 187;
+        -webkit-transform: rotate(450deg);
+        transform: rotate(450deg);
+    }
+}
+@keyframes dash {
+    0% {
+        stroke-dashoffset: 187;
+    }
+    50% {
+        stroke-dashoffset: 46.75;
+        -webkit-transform: rotate(135deg);
+        transform: rotate(135deg);
+    }
+    100% {
+        stroke-dashoffset: 187;
+        -webkit-transform: rotate(450deg);
+        transform: rotate(450deg);
+    }
+}
