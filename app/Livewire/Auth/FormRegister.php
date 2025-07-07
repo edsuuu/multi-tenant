@@ -85,7 +85,7 @@ class FormRegister extends Component
             'nameBusiness' => 'Nome do comércio',
         ]);
 
-        
+
 
         dd($validatedData);
 
