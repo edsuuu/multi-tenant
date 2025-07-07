@@ -9,12 +9,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Stancl\Tenancy\Database\Models\Domain;
 
 class FormRegister extends Component
 {
-    public $name, $email, $documents, $cellphone, $password, $passwordConfirmation, $domain, $nameBusiness;
+    #[Validate]
+    public $documents;
+    public $name, $email, $cellphone, $password, $passwordConfirmation, $domain, $nameBusiness;
 
     protected function rules()
     {
@@ -39,10 +42,8 @@ class FormRegister extends Component
     public function save()
     {
         if ($this->password !== $this->passwordConfirmation) {
-            $this->addError('passwordConfirmation', 'As senhas não coincidem.');
-            return;
+            return $this->addError('passwordConfirmation', 'As senhas não coincidem.');
         }
-
 
         $validatedData = $this->validate([
             'name' => [
@@ -80,42 +81,74 @@ class FormRegister extends Component
             'name' => 'Nome completo',
             'email' => 'E-mail',
             'password' => 'Senha',
+            'documents' => 'CPF/CNPJ',
             'cellphone' => 'Celular',
             'domain' => 'Domínio',
             'nameBusiness' => 'Nome do comércio',
         ]);
 
+        $user = User::query()
+            ->where('email', $validatedData['email'])
+            ->first();
 
-
-        dd($validatedData);
-
-        $tenant = Tenant::query()->where('domain', $this->domain)->first();
-
-        $domain = Domain::query()->where('name');
-
-        try {
-            $user = User::create([
-                'first_name' => $validatedData['formData']['firstName'],
-                'last_name' => $validatedData['formData']['lastName'],
-                'email' => $validatedData['formData']['email'],
-                'password' => Hash::make($validatedData['formData']['password']),
-                'role' => 'customer',
-            ]);
-
-            DB::commit();
-
-            Auth::login($user);
-
-            if (Auth::check()) {
-                return redirect()->route('complete-profile');
-            }
-
-            return redirect()->route('login');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::channel('auth')->debug('Erro ao tentar criar uma conta' . $e->getMessage());
-            $this->addError('form', 'Ocorreu um erro ao tentar criar uma conta');
+        if ($user) {
+            $this->addError('email', 'Já existe uma conta com este E-mail');
         }
+
+        $tenant = Tenant::query()
+            ->with('domain')
+            ->where('documents', 'LIKE', '%' . $validatedData['documents'] . '%')
+            ->first();
+
+        if ($tenant) {
+            $this->addError('documents', 'Já existe um Comercio com este CPF/CNPJ');
+            return;
+        }
+
+        $concatUrl = $validatedData['domain'] . '.' . config('app.base_domain');
+
+        $domain = Domain::query()
+            ->where('domain', $concatUrl)
+            ->first();
+
+        if ($domain) {
+            $this->addError('domain', 'Já existe um Comercio com este dominio');
+            return;
+        }
+
+        $user = User::query()->create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'cellphone' => $validatedData['cellphone'],
+        ]);
+
+        $tenant = Tenant::query()->create([
+            'id' => str()->uuid(),
+            'name' => $validatedData['nameBusiness'],
+            'main_user_id' => $user->id,
+        ]);
+
+        $domain = Domain::query()->create([
+            'domain' => $concatUrl,
+            'tenant_id' => $tenant->id,
+        ]);
+
+        $user->update(['tenant_id' => $tenant->id]);
+
+        return redirect(tenant_route($domain->domain, 'home-tenant'));
+//            Auth::login($user);
+//
+//            if (Auth::check()) {
+//                return redirect()->route('complete-profile');
+//            }
+//
+//            return redirect()->route('login');
+//        } catch (\Exception $e) {
+//            DB::rollBack();
+//            Log::channel('auth')->debug('Erro ao tentar criar uma conta' . $e->getMessage());
+//            $this->addError('form', 'Ocorreu um erro ao tentar criar uma conta');
+//        }
 	}
 
     public function handleChange($field): void

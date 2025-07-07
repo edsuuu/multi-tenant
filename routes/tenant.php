@@ -35,7 +35,7 @@ Route::middleware([
         if (count($explode) > 1 && $explode[0] !== config('app.url')) {
 //            return redirect(config('app.url'));
         }
-    });
+    })->name('home-tenant');
 
 
     Route::get('cliente/{slug}', static function ($slug) {

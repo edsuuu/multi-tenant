@@ -86,7 +86,7 @@
                         required="true"
                         placeholder="CPF/CNPJ"
                         error-message="{{ $errors->first('documents') }}"
-                        wire:model="documents"
+                        wire:model.live="documents"
                         oninput="this.value = documentMask(this.value)"
                     />
                 </div>

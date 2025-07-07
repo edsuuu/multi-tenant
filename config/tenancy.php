@@ -28,7 +28,6 @@ return [
      * To configure their behavior, see the config keys below.
      */
     'bootstrappers' => [
-        // TODO: LEMBRAR DE VOLTAR QND PRECISAR AQ
 //        Stancl\Tenancy\Bootstrappers\DatabaseTenancyBootstrapper::class,
 //        Stancl\Tenancy\Bootstrappers\CacheTenancyBootstrapper::class,
 //        Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper::class,

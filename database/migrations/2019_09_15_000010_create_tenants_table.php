@@ -17,7 +17,7 @@ class CreateTenantsTable extends Migration
     {
         Schema::create('tenants', static function (Blueprint $table) {
             $table->string('id')->primary();
-
+            $table->foreignId('main_user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name', 60)->nullable();
             $table->string('documents', 18)->unique()->nullable();
             $table->string('zip_code', 9)->nullable();
@@ -26,7 +26,6 @@ class CreateTenantsTable extends Migration
             $table->string('neighborhood')->nullable();
             $table->string('number', 10)->nullable();
             $table->string('uf', 2)->nullable();
-            $table->string('photo')->nullable();
             $table->json('data')->nullable();
             $table->timestamps();
         });
