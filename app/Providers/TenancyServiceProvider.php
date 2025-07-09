@@ -94,7 +94,7 @@ class TenancyServiceProvider extends ServiceProvider
 
     public function register()
     {
-        //
+
     }
 
     public function boot()
@@ -103,6 +103,16 @@ class TenancyServiceProvider extends ServiceProvider
         $this->mapRoutes();
 
         $this->makeTenancyMiddlewareHighestPriority();
+
+        Middleware\InitializeTenancyBySubdomain::$onFail = fn () => redirect($this->buildCentralDomain());
+    }
+
+    private function buildCentralDomain(): string
+    {
+        $baseDomain = config('app.base_domain', 'localhost');
+        $protocol = app()->environment('local') ? 'http' : 'https';
+
+        return "{$protocol}://{$baseDomain}";
     }
 
     protected function bootEvents()

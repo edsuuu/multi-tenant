@@ -101,19 +101,16 @@ class FormRegister extends Component
             ->first();
 
         if ($tenant) {
-            $this->addError('documents', 'Já existe um Comercio com este CPF/CNPJ');
-            return;
+            return $this->addError('documents', 'Já existe um Comercio com este CPF/CNPJ');
         }
 
-        $concatUrl = $validatedData['domain'] . '.' . config('app.base_domain');
 
         $domain = Domain::query()
-            ->where('domain', $concatUrl)
+            ->where('domain', $validatedData['domain'])
             ->first();
 
         if ($domain) {
-            $this->addError('domain', 'Já existe um Comercio com este dominio');
-            return;
+            return $this->addError('domain', 'Já existe um Comercio com este dominio');
         }
 
         $user = User::query()->create([
@@ -130,13 +127,15 @@ class FormRegister extends Component
         ]);
 
         $domain = Domain::query()->create([
-            'domain' => $concatUrl,
+            'domain' => $validatedData['domain'],
             'tenant_id' => $tenant->id,
         ]);
 
         $user->update(['tenant_id' => $tenant->id]);
 
-        return redirect(tenant_route($domain->domain, 'home-tenant'));
+        $baseDomain = config('app.base_domain');
+
+        return redirect(tenant_route("{$domain->domain}.{$baseDomain}", 'home-tenant'));
 //            Auth::login($user);
 //
 //            if (Auth::check()) {

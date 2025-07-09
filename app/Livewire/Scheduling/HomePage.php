@@ -10,7 +10,7 @@ class HomePage extends Component
     public $plans = [];
     public function mount()
     {
-        $this->plans = Plans::all();
+//        $this->plans = Plans::all();
     }
 
     public function render()
