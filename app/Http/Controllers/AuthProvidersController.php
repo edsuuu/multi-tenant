@@ -55,7 +55,7 @@ class AuthProvidersController extends Controller
                 DB::commit();
             }
 
-            Auth::login($user, 'on');
+            Auth::login($user, true);
 
             $businessId = Business::where('user_id', $user->id)->value('id');
 

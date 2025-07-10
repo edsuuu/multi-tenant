@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Route;
 //use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
@@ -38,16 +39,28 @@ Route::middleware([
         }
     })->name('home-tenant');
 
+    Route::get('/auth/redirect/{token}', static function ($token) {
+        try {
+            $data = decrypt($token);
 
-    Route::get('cliente/{slug}', static function ($slug) {
-        return view('scheduling.business.page-business', ['business_slug' => $slug]);
-    })->name('page-business');
+            if (now()->gt($data['expires'])) {
+                abort(403, 'Token expirado');
+            }
 
-    Route::middleware(['auth', \App\Http\Middleware\CheckIfUserHasBusiness::class])->get('/completar-perfil', function () {
+            $user = \App\Models\User::findOrFail($data['user_id']);
+            Auth::login($user);
+
+            return redirect()->route('dashboard');
+        } catch (DecryptException $e) {
+            return redirect()->route('home');
+        }
+    })->name('auth-redirect');
+
+    Route::get('/completar-perfil', function () {
         return view('scheduling.auth.complete-profile');
     })->name('complete-profile');
 
-    Route::middleware(['auth', \App\Http\Middleware\CheckIfUserNotHasBusiness::class])->group(function () {
+    Route::middleware(['auth'])->group(function () {
         Route::view('dashboard', 'scheduling.dashboard.dashboard')->name('dashboard');
         Route::view('produtos', 'scheduling.catalog.products')->name('products');
         Route::view('procedimentos', 'scheduling.catalog.procedures')->name('procedures');

@@ -4,7 +4,6 @@ namespace App\Livewire\Auth;
 
 use App\Models\Tenant;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -87,68 +86,71 @@ class FormRegister extends Component
             'nameBusiness' => 'Nome do comércio',
         ]);
 
-        $user = User::query()
-            ->where('email', $validatedData['email'])
-            ->first();
+        try {
+            DB::beginTransaction();
 
-        if ($user) {
-            $this->addError('email', 'Já existe uma conta com este E-mail');
-        }
+            $user = User::query()
+                ->where('email', $validatedData['email'])
+                ->first();
 
-        $tenant = Tenant::query()
-            ->with('domain')
-            ->where('documents', 'LIKE', '%' . $validatedData['documents'] . '%')
-            ->first();
+            if ($user) {
+                return $this->addError('email', 'Já existe uma conta com este E-mail');
+            }
 
-        if ($tenant) {
-            return $this->addError('documents', 'Já existe um Comercio com este CPF/CNPJ');
-        }
+            $tenant = Tenant::query()
+                ->with('domain')
+                ->where('documents', $validatedData['documents'])
+                ->first();
+
+            if ($tenant) {
+                return $this->addError('documents', 'Já existe um Comercio com este CPF/CNPJ');
+            }
 
 
-        $domain = Domain::query()
-            ->where('domain', $validatedData['domain'])
-            ->first();
+            $domain = Domain::query()
+                ->where('domain', $validatedData['domain'])
+                ->first();
 
-        if ($domain) {
-            return $this->addError('domain', 'Já existe um Comercio com este dominio');
-        }
+            if ($domain) {
+                return $this->addError('domain', 'Já existe um Comercio com este dominio');
+            }
 
-        $user = User::query()->create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
-            'cellphone' => $validatedData['cellphone'],
-        ]);
+            $user = User::query()->create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+                'cellphone' => $validatedData['cellphone'],
+            ]);
 
-        $tenant = Tenant::query()->create([
-            'id' => str()->uuid(),
-            'name' => $validatedData['nameBusiness'],
-            'main_user_id' => $user->id,
-        ]);
+            $tenant = Tenant::query()->create([
+                'id' => str()->uuid(),
+                'name' => $validatedData['nameBusiness'],
+                'main_user_id' => $user->id,
+                'documents' => $validatedData['documents']
+            ]);
 
-        $domain = Domain::query()->create([
-            'domain' => $validatedData['domain'],
-            'tenant_id' => $tenant->id,
-        ]);
+            $domain = Domain::query()->create([
+                'domain' => $validatedData['domain'],
+                'tenant_id' => $tenant->id,
+            ]);
 
-        $user->update(['tenant_id' => $tenant->id]);
+            $user->update(['tenant_id' => $tenant->id]);
 
-        $baseDomain = config('app.base_domain');
+            $baseDomain = config('app.base_domain');
 
-        return redirect(tenant_route("{$domain->domain}.{$baseDomain}", 'home-tenant'));
 //            Auth::login($user);
 //
-//            if (Auth::check()) {
-//                return redirect()->route('complete-profile');
-//            }
-//
-//            return redirect()->route('login');
-//        } catch (\Exception $e) {
-//            DB::rollBack();
-//            Log::channel('auth')->debug('Erro ao tentar criar uma conta' . $e->getMessage());
-//            $this->addError('form', 'Ocorreu um erro ao tentar criar uma conta');
-//        }
-	}
+//            return redirect(tenant_route("{$domain->domain}.{$baseDomain}", 'dashboard'));
+
+            $token = encrypt(['user_id' => $user->id, 'expires' => now()->addMinutes()]);
+            DB::commit();
+            return redirect(tenant_route("{$domain->domain}.{$baseDomain}", 'auth-redirect', ['token' => $token]));
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::channel('daily')->error('Erro ao tentar criar uma conta: Erro ' . $e);
+            $this->addError('form', 'Ocorreu um erro ao tentar criar uma conta. Tente novamente mais tarde.');
+        }
+    }
 
     public function handleChange($field): void
     {

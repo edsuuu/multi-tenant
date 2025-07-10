@@ -62,8 +62,7 @@
     <div class="flex flex-col gap-3 mt-5">
         <div class="flex flex-row justify-center text-[15px]">
             <p class="text-gray-700 font-medium ">
-                Ainda não possuí uma conta? <span class="text-blue-link font-medium cursor-pointer hover:underline"
-                                                  onclick="window.location = '{{ route('register') }}';">Cadastre-se</span>
+                Ainda não possuí uma conta? <a href="{{ route('register') }}" wire:navigate class="text-blue-link font-medium cursor-pointer hover:underline">Cadastre-se</a>
             </p>
         </div>
         <div class="flex flex-row items-center w-full px-2 my-3">

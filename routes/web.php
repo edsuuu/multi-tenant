@@ -23,5 +23,9 @@ foreach (config('tenancy.central_domains') as $domain) {
         Route::middleware('web')->get('oauth2/google', [AuthProvidersController::class, 'googleAuth'])->name('google');
         Route::middleware('web')->get('oauth2/google/callback', [AuthProvidersController::class, 'googleCallback']);
 
+
+        Route::middleware(['auth'])->group(function () {
+            Route::view('produtos', 'scheduling.catalog.products')->name('products');
+        });
     });
 }
