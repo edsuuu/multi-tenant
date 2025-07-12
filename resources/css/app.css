@@ -25,6 +25,34 @@
     --color-blue-for-complete: #4388F7;
 }
 
+.cst-scrollbar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.cst-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #36de95;
+    opacity: 10;
+    border-radius: 10px;
+}
+
+.cst-scrollbar::-webkit-scrollbar-track {
+    background: #20392F;
+}
+
+.cst-scrollbar-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cst-scrollbar-body::-webkit-scrollbar-thumb {
+    background-color: #36de95;
+    opacity: 10;
+}
+
+.cst-scrollbar-body::-webkit-scrollbar-track {
+    background: #0e0e19;
+}
+
+
 .spinner {
     -webkit-animation: rotator 1.4s linear infinite;
     animation: rotator 1.4s linear infinite;

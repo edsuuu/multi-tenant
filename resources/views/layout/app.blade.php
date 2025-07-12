@@ -13,7 +13,16 @@
 </head>
 <body>
 
-@extends('layout.navbar-auth')
+@include('layout.navbar-auth-mobile')
+
+<div class="flex flex-col lg:flex-row">
+    @include('layout.navbar-auth-desktop')
+    <main class="flex-1 lg:pl-64">
+        <div class="p-6">
+            {{ $slot }}
+        </div>
+    </main>
+</div>
 
 @livewireScripts
 </body>
