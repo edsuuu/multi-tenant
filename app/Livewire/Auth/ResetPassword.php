@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class ResetPassword extends Component
 {
-    public $token, $email, $password, $password_confirmation, $authorize = false;
+    public $token, $email, $password, $password_confirmation;
 
     public function mount($token)
     {
@@ -20,10 +20,8 @@ class ResetPassword extends Component
 
         if (!$verifyToken || !Hash::check($this->token, $verifyToken->token)) {
             session()->flash('error', 'Token inválido ou já utilizado.');
-            return redirect()->route('password.request');
+            return redirect()->route('login');
         }
-
-        $this->authorize = true;
     }
 
     public function resetPassword()

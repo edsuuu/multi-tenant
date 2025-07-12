@@ -52,8 +52,8 @@ class User extends Authenticatable implements Auditable
         ];
     }
 
-    public function business(): HasOne
+    public function tenant(): HasOne
     {
-        return $this->hasOne(Business::class, 'user_id', 'id');
+        return $this->hasOne(Tenant::class, 'id', 'tenant_id');
     }
 }

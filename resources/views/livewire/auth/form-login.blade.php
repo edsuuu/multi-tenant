@@ -12,51 +12,71 @@
                     <span class="text-red-500 text-[15px] font-medium">{{ $errors->first('error') }}</span>
                 </div>
             @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    <span class="text-red-500 text-[15px] font-medium">{{ session('error') }}</span>
+                </div>
+            @endif
             @if (session('success'))
                 <span class="text-green-700 text-[13px] mt-2"> {{ session('success') }}</span>
             @endif
         </div>
     </div>
-    <form method="POST" wire:submit.prevent="submit" class="flex flex-col gap-2">
+
+    <form method="POST" wire:submit.prevent="login" class="flex flex-col gap-2">
         @csrf
-        <div class="flex flex-col gap-4">
-            <div class="text-black flex flex-col gap-0.5">
-                <p class="text-gray-700 text-[15px] font-medium">Seu e-mail</p>
-                <input type="email" name="email" placeholder="Digite o seu email" wire:model.defer="formData.email"
-                       wire:change="handleChange('formData.email')"
-                       class="border border-gray-300 outline-none p-2 pl-3 rounded focus:border-blue-link invalid:border-red-500">
-                @error('formData.email')
-                <span class="text-red-500 text-[13px]">{{ $message }}</span>
-                @enderror
+        <div class="grid grid-cols-12 gap-4">
+
+            <div class="col-span-12">
+                <x-input
+                    name="email"
+                    label="Digite o seu email"
+                    type="email"
+                    required="true"
+                    placeholder="Nome completo do responsável"
+                    error-message="{{ $errors->first('email') }}"
+                    wire:model="email"
+                />
             </div>
-            <div class="text-black flex flex-col gap-0.5">
-                <p class="text-gray-700 text-[15px] font-medium">Senha</p>
-                <input type="password" name="password" placeholder="Digite a sua senha"
-                       wire:model.defer="formData.password" wire:change="handleChange('formData.password')"
-                       class="border border-gray-300 outline-none p-2 pl-3 rounded focus:border-blue-link invalid:border-red-500">
-                @error('formData.password')
-                <span class="text-red-500 text-[13px]">{{ $message }}</span>
-                @enderror
+
+
+            <div class="col-span-12">
+                <x-input
+                    name="password"
+                    label="Digite sua senha"
+                    type="password"
+                    required="true"
+                    placeholder="Senha para acesso"
+                    error-message="{{ $errors->first('password') }}"
+                    wire:model="password"
+                />
             </div>
-        </div>
-        <div class="flex flex-row justify-between pl-0.5 pr-0.5 my-4">
-            <div class="">
-                <label for="remember"
-                       class="flex flex-row items-center gap-2 cursor-pointer text-[14px] text-gray-700 font-medium">
+
+            <div class="col-span-12 flex flex-row justify-between pl-0.5 pr-0.5 my-2">
+                <label for="remember" class="flex flex-row items-center gap-2 cursor-pointer text-[14px] text-gray-700 font-medium select-none">
                     <input type="checkbox" name="remember" id="remember" class="cursor-pointer"
-                           wire:model="formData.remember">
+                           wire:model="remember">
                     Manter conectado
                 </label>
+                <div>
+                    <a href="{{ route('forgot-password') }}" wire:navigate class="font-medium text-blue-link text-[15px] hover:underline">Esqueceu a senha ?</a>
+                </div>
             </div>
-            <div>
-                <a href="{{ route('forgot-password') }}" class="font-medium text-blue-link text-[15px] hover:underline">Esqueceu a senha ?</a>
-            </div>
-        </div>
 
-        <button type="submit"
-                class="bg-blue-button w-full font-bold text-white-color rounded-[5px] py-2 transition-all duration-200
-                    active:scale-[0.99]">Entrar
-        </button>
+            @error('form')
+                 <span class="col-span-12 text-red-500 text-[13px] my-1 block">{{ $message }}</span>
+            @enderror
+
+            <button wire:loading.attr="disabled" type="submit" class="relative bg-blue-button w-full font-bold text-white-color rounded-[5px] py-2 transition-all duration-200 active:scale-[0.99] flex flex-row justify-center col-span-12">
+                <span>Entrar</span>
+                <div wire:loading wire:target="save" class="absolute top-0 left-0 w-full h-full z-10">
+                    <div class="w-full h-full rounded-md flex items-center justify-center bg-white/60">
+                        <x-heroicon-s-arrow-path class="text-blue-link w-5 h-5 animate-spin"/>
+                    </div>
+                </div>
+            </button>
+        </div>
     </form>
 
     <div class="flex flex-col gap-3 mt-5">
@@ -117,7 +137,7 @@
         document.getElementById('logo-google').classList.add('hidden')
         document.getElementById('spinner-login').classList.remove('hidden');
         setTimeout(() => {
-            window.location = '{{ route('google', ['business' => 'true']) }}';
+            window.location = '{{ route('google') }}';
         }, 1000);
     }
 </script>

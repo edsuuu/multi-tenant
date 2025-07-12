@@ -138,17 +138,13 @@ class FormRegister extends Component
 
             $baseDomain = config('app.base_domain');
 
-//            Auth::login($user);
-//
-//            return redirect(tenant_route("{$domain->domain}.{$baseDomain}", 'dashboard'));
-
             $token = encrypt(['user_id' => $user->id, 'expires' => now()->addMinutes()]);
             DB::commit();
             return redirect(tenant_route("{$domain->domain}.{$baseDomain}", 'auth-redirect', ['token' => $token]));
         } catch (\Exception $e) {
             DB::rollback();
             Log::channel('daily')->error('Erro ao tentar criar uma conta: Erro ' . $e);
-            $this->addError('form', 'Ocorreu um erro ao tentar criar uma conta. Tente novamente mais tarde.');
+            return $this->addError('form', 'Ocorreu um erro ao tentar criar uma conta. Tente novamente mais tarde.');
         }
     }
 
