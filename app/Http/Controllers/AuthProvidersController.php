@@ -30,7 +30,6 @@ class AuthProvidersController extends Controller
             $user = User::where('email', $googleUser->user['email'])->first();
 
             if(!$user){
-
                 DB::beginTransaction();
 
                 $user = User::create([

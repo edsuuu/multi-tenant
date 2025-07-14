@@ -138,7 +138,7 @@ class FormRegister extends Component
 
             $baseDomain = config('app.base_domain');
 
-            $token = encrypt(['user_id' => $user->id, 'expires' => now()->addMinutes()]);
+            $token = encrypt(['user_id' => $user->id, 'expires' => now()->addMinutes(), 'remember' => false]);
             DB::commit();
             return redirect(tenant_route("{$domain->domain}.{$baseDomain}", 'auth-redirect', ['token' => $token]));
         } catch (\Exception $e) {

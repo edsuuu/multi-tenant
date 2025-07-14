@@ -20,11 +20,11 @@
                 <div class="p-4 border-b border-zinc-200">
                     <div class="flex flex-row items-center gap-3 mb-3">
                         <div class="shrink-0 w-10 h-10 bg-zinc-100 rounded-full flex items-center justify-center">
-                            <span class="text-zinc-600 font-medium text-sm">e</span>
+                            <span class="text-zinc-600 font-medium text-sm">{{ strtoupper(Str::substr(auth()->user()->name, 0, 1)) }}</span>
                         </div>
                         <div class="flex flex-col overflow-hidden">
-                            <span class="font-semibold text-zinc-900 truncate">etesda@amsikdnmasa</span>
-                            <span class="text-sm text-zinc-500 truncate">etesda@amsikdnmasa.com</span>
+                            <span class="font-semibold text-zinc-900 truncate">{{ auth()->user()->name  }}</span>
+                            <span class="text-sm text-zinc-500 truncate">{{ auth()->user()->email  }}</span>
                         </div>
                     </div>
                 </div>

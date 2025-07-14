@@ -48,7 +48,7 @@ Route::middleware([
             }
 
             $user = \App\Models\User::findOrFail($data['user_id']);
-            Auth::login($user);
+            Auth::login($user, $data['remember']);
 
             return redirect()->route('dashboard');
         } catch (DecryptException $e) {
@@ -60,7 +60,7 @@ Route::middleware([
         return view('scheduling.auth.complete-profile');
     })->name('complete-profile');
 
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth', 'web'])->group(function () {
         Route::view('dashboard', 'scheduling.dashboard.dashboard')->name('dashboard');
         Route::view('produtos', 'scheduling.catalog.products')->name('products');
         Route::view('procedimentos', 'scheduling.catalog.procedures')->name('procedures');

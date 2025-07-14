@@ -34,7 +34,6 @@ class FormLogin extends Component
             'password' => 'Senha',
         ]);
 
-
 		$remember = $this->remember;
 
 		try {
@@ -54,7 +53,7 @@ class FormLogin extends Component
             // colocar validacao de user ativo e tenant ativo, ip, envio de email log  de auth
 
             $baseDomain = config('app.base_domain');
-            $token = encrypt(['user_id' => $user->id, 'expires' => now()->addMinutes()]);
+            $token = encrypt(['user_id' => $user->id, 'expires' => now()->addMinutes(), 'remember' => $remember]);
             return redirect(tenant_route("{$user->tenant->domain->domain}.{$baseDomain}", 'auth-redirect', ['token' => $token]));
 		} catch (\Exception $e) {
             Log::channel('daily')->error('Erro ao tentar fazer login em uma conta: email ' . $validatedData['email'] . 'erro' . $e);
