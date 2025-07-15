@@ -10,8 +10,11 @@ foreach (config('tenancy.central_domains') as $domain) {
 
         Route::view('/', 'scheduling.home-page')->name('home');
 
-        Route::middleware(['auth'])->group(function () {
-            Route::view('produtos', 'scheduling.catalog.products')->name('products');
+        Route::middleware(['auth','web'])->group(function () {
+            Route::view('dashboard', 'scheduling.dashboard.dashboard')->name('dashboard');
+            Route::view('tenants', 'scheduling.tenants.tenants')->name('tenants');
+            Route::view('usuarios', 'scheduling.users.users')->name('users');
+
         });
     });
 

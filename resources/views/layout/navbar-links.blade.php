@@ -11,27 +11,43 @@
         <div class="flex flex-col gap-2 px-2">
             <p class="p-2 text-white text-sm">Plataforma </p>
 
-            <a href="{{ route('dashboard') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+            <a href="{{ route('dashboard') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-blue-link' : '' }}">
                 <div class="flex flex-row gap-2 items-center p-2">
                     <x-heroicon-o-home class="w-6 h-6"/>
                     <span class="">Dashboard </span>
                 </div>
             </a>
+            @if(auth()->user()->tenant)
+                <a href="{{ route('products') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+                    <div class="flex flex-row gap-2 items-center p-2">
+                        <x-heroicon-o-shopping-cart class="w-6 h-6"/>
+                        <span class="">Produtos </span>
+                    </div>
+                </a>
 
-            <a href="{{ route('products') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
-                <div class="flex flex-row gap-2 items-center p-2">
-                    <x-heroicon-o-shopping-cart class="w-6 h-6"/>
-                    <span class="">Produtos </span>
-                </div>
-            </a>
+                <a href="{{ route('procedures') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+                    <div class="flex flex-row gap-2 items-center p-2">
+                        <x-heroicon-o-tag class="w-6 h-6"/>
+                        <span class="">Procedimentos </span>
+                    </div>
+                </a>
+            @endif
 
-            <a href="{{ route('procedures') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+            <a href="{{ route('users') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('users') ? 'bg-blue-link' : '' }}">
                 <div class="flex flex-row gap-2 items-center p-2">
                     <x-heroicon-o-tag class="w-6 h-6"/>
-                    <span class="">Procedimentos </span>
+                    <span class="">Usuários </span>
                 </div>
             </a>
 
+            @if(!auth()->user()->tenant)
+                <a href="{{ route('tenants') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('tenants') ? 'bg-blue-link' : '' }}">
+                    <div class="flex flex-row gap-2 items-center p-2">
+                        <x-heroicon-o-tag class="w-6 h-6"/>
+                        <span class="">Tenants </span>
+                    </div>
+                </a>
+            @endif
 {{--            <div--}}
 {{--                x-cloak--}}
 {{--                x-data="{ open: {{ request()->routeIs(['home']) ? 'true' : 'false' }} }">--}}
