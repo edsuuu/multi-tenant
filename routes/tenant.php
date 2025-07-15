@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-use Illuminate\Contracts\Encryption\DecryptException;
+use App\Http\Controllers\AuthProvidersController;
 use Illuminate\Support\Facades\Route;
-//use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Illuminate\Http\Request;
@@ -24,37 +23,12 @@ Route::middleware([
     'web',
     InitializeTenancyBySubdomain::class,
     PreventAccessFromCentralDomains::class,
-])->group(function ($request) {
-//    Route::get('/', function () {
-//        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
-//    });
-    Route::get('/', function (Request $request) {
-
+])->group(function () {
+    Route::get('/', static function () {
         echo 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
-
-        $explode = explode('.', $request->getHost());
-
-        if (count($explode) > 1 && $explode[0] !== config('app.url')) {
-//            return redirect(config('app.url'));
-        }
     })->name('home-tenant');
 
-    Route::get('/auth/redirect/{token}', static function ($token) {
-        try {
-            $data = decrypt($token);
-
-            if (now()->gt($data['expires'])) {
-                abort(403, 'Token expirado');
-            }
-
-            $user = \App\Models\User::findOrFail($data['user_id']);
-            Auth::login($user, $data['remember']);
-
-            return redirect()->route('dashboard');
-        } catch (DecryptException $e) {
-            return redirect()->route('home');
-        }
-    })->name('auth-redirect');
+    Route::get('/auth/redirect/{token}', [AuthProvidersController::class, 'authTenant'])->name('auth-redirect');
 
     Route::get('/completar-perfil', function () {
         return view('scheduling.auth.complete-profile');

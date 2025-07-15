@@ -16,7 +16,7 @@
         x-transition:leave="transition transform duration-300"
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="-translate-x-full"
-        class="fixed inset-y-0 start-0 z-40 w-64 bg-blue-black dark:bg-zinc-900 shadow-lg transform lg:translate-x-0 lg:static lg:hidden"
+        class="fixed inset-y-0 start-0 z-40 w-64 bg-blue-black shadow-lg transform lg:translate-x-0 lg:static lg:hidden"
     >
         @include('layout.navbar-links')
     </aside>

@@ -4,7 +4,7 @@
             <x-heroicon-m-computer-desktop class="w-5 h-5 text-white"/>
         </div>
 
-        <span class="font-semibold text-white truncate">{{ auth()->user()->tenant?->name ?? 'Admin' }}</span>
+        <span class="font-semibold text-white truncate">{{ auth()->user()->tenant?->name ?? 'Administrador' }}</span>
     </div>
 
     <div class="flex-1 overflow-y-auto pr-1 pb-5 cst-scrollbar">
@@ -63,7 +63,7 @@
     <div x-data="{ open: false }" class="relative mx-2 max-lg:pb-10">
 
         <div @click="open = !open"
-             class="max-lg:hidden flex flex-row gap-2 items-center cursor-pointer p-1.5 mb-2 rounded-md hover:bg-blue-link transition-all duration-200 bg-blue-800">
+             class="max-lg:hidden flex flex-row gap-2 items-center cursor-pointer p-1.5 mb-2 rounded-md hover:bg-blue-link transition-all duration-200">
             <div class="bg-gray-100 border border-gray-200 p-1 px-3 rounded-md">
             <span class="w-4 h-4 font-bold text-sm">
                 {{ strtoupper(Str::substr(auth()->user()->name, 0, 1)) }}
