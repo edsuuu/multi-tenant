@@ -109,7 +109,7 @@
                 </div>
 
                 <div>
-                    <a href="#" class="flex items-center gap-3 p-2 text-zinc-700 hover:bg-zinc-100 transition-colors">
+                    <a href="{{ route('configuration') }}" wire:navigate class="flex items-center gap-3 p-2 text-zinc-700 hover:bg-zinc-100 transition-colors">
                         <x-heroicon-o-cog class="w-5 h-5 text-gray-400"/>
                         <span class="text-sm">Configurações</span>
                     </a>

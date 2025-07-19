@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Scheduling\Profile;
+namespace App\Livewire\Profile;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +45,6 @@ class SessionsProfile extends Component
 
     public function render()
     {
-        return view('livewire.scheduling.profile.sessions-profile');
+        return view('livewire.profile.sessions-profile');
     }
 }

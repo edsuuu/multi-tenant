@@ -7,23 +7,12 @@
         @csrf
         <div class="max-w-xl flex flex-col gap-4">
             <div class="text-black flex flex-col gap-0.5">
-                <p class="text-gray-700 text-[14px] font-medium">Nome</p>
-                <input type="text" name="firstName" placeholder="Nome"
-                       wire:model="firstName"
-                       class="border border-gray-300 outline-none p-2 pl-3 rounded focus:border-blue-link  @error('firstName') border-red-500 @enderror"
+                <p class="text-gray-700 text-[14px] font-medium">Nome completo</p>
+                <input type="text" name="name" placeholder="Nome"
+                       wire:model="name"
+                       class="border border-gray-300 outline-none p-2 pl-3 rounded focus:border-blue-link  @error('name') border-red-500 @enderror"
                        maxlength="20">
                 @error('firstName')
-                <span class="text-red-500 text-[13px]">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="text-black flex flex-col gap-0.5">
-                <p class="text-gray-700 text-[14px] font-medium">Sobrenome</p>
-                <input type="text" name="name" placeholder="Sobrenome"
-                       wire:model="lastName"
-                       class="border border-gray-300 outline-none p-2 pl-3 rounded focus:border-blue-link  @error('lastName') border-red-500 @enderror"
-                       maxlength="20">
-                @error('lastName')
                 <span class="text-red-500 text-[13px]">{{ $message }}</span>
                 @enderror
             </div>

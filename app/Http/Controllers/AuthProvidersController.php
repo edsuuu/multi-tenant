@@ -40,41 +40,63 @@ class AuthProvidersController extends Controller
     public function googleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = Socialite::driver('google')
+                ->stateless()
+                ->user();
 
-            $user = User::query()
+            $userDB = User::query()
                 ->with(['tenant.domain'])
                 ->where('email', $googleUser->user['email'])
                 ->first();
 
-            if (!$user) {
+            if (!$userDB) {
                 return redirect()->route('login')->withErrors(['google' => 'Erro ao autenticar com Google. Não existe conta com esse email vinculado.']);
             }
 
-            if (!isset($user->google_id)) {
-                $user->update([
+            if (!isset($userDB->google_id)) {
+                $userDB->update([
                     'google_id' => $googleUser->user['id'],
                     'email_verified_at' => now(),
                 ]);
             }
 
-            if (!$user->tenant) {
-                Auth::login($user, true);
+            if ($userDB->tenant === null) {
+                Auth::login($userDB, true);
                 // validar como vai funcionar o gerenciamento dos tentant
                 return redirect()->route('dashboard');
             }
 
-            return self::redirectTenant($user->id, $user->tenant->domain);
+            $token = encrypt(['user_id' => $userDB->id, 'expires' => now()->addMinutes(4), 'remember' => true]);
+
+            return redirect()->route('googleRedirectAuth', ['token' => $token]);
         } catch (ClientException $e) {
-            \Log::error($e);
+            Log::channel('daily')->error($e);
             return redirect()->route('login')->withErrors(['google' => 'Erro ao autenticar com Google. Por favor, tente novamente.']);
         } catch (\Exception $e) {
-            \Log::error($e);
+            Log::channel('daily')->error($e);
             return redirect()->route('login')->withErrors(['error' => 'Ocorreu um erro inesperado. Tente novamente.']);
         }
     }
 
-    public static function redirectTenant($userId, $domain)
+    public function redirectAuthTenant($token)
+    {
+        $data = decrypt($token);
+
+
+        if (now()->gt($data['expires'])) {
+            session()->flash('error', 'Erro ao tentar autenticar');
+            return redirect()->route('login');
+        }
+
+        $userDB = User::query()
+            ->with(['tenant.domain'])
+            ->where('id', $data['user_id'])
+            ->first();
+
+        return $this->redirectTenant($userDB->id,$userDB->tenant->domain->domain);
+    }
+
+    private function redirectTenant($userId, $domain)
     {
         $baseDomain = config('app.base_domain');
         $token = encrypt(['user_id' => $userId, 'expires' => now()->addMinutes(), 'remember' => true]);

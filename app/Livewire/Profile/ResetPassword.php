@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Scheduling\Profile;
+namespace App\Livewire\Profile;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -42,6 +42,6 @@ class ResetPassword extends Component
 
     public function render()
     {
-        return view('livewire.scheduling.profile.reset-password');
+        return view('livewire.profile.reset-password');
     }
 }

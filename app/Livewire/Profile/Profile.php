@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Scheduling\Profile;
+namespace App\Livewire\Profile;
 
 use Livewire\Component;
 
@@ -10,6 +10,6 @@ class Profile extends Component
 
     public function render()
     {
-        return view('livewire.scheduling.profile.profile');
+        return view('livewire.profile.profile');
     }
 }

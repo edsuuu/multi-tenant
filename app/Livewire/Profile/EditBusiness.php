@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Scheduling\Profile;
+namespace App\Livewire\Profile;
 
 use App\Models\Business;
 use App\Services\AddressService;
@@ -87,6 +87,6 @@ class EditBusiness extends Component
 
     public function render()
     {
-        return view('livewire.scheduling.profile.edit-business');
+        return view('livewire.profile.edit-business');
     }
 }

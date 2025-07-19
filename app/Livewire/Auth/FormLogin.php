@@ -4,6 +4,7 @@ namespace App\Livewire\Auth;
 
 use App\Http\Controllers\AuthProvidersController;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -45,10 +46,18 @@ class FormLogin extends Component
 				return $this->addError('password', 'Senha inválida.');
 			}
 
+            if (!$user->tenant) {
+                Auth::login($user, true);
+                return redirect()->route('dashboard');
+            }
             // colocar validacao de user ativo e tenant ativo, ip, envio de email log  de auth
 
-            return AuthProvidersController::redirectTenant($user->id, $user->tenant->domain);
-		} catch (\Exception $e) {
+            $baseDomain = config('app.base_domain');
+
+            $token = encrypt(['user_id' => $user->id, 'expires' => now()->addMinutes(), 'remember' => true]);
+
+            return redirect(tenant_route("{$user->tenant->domain->domain}.{$baseDomain}", 'auth-redirect', ['token' => $token]));
+        } catch (\Exception $e) {
             Log::channel('daily')->error('Erro ao tentar fazer login em uma conta: email ' . $validatedData['email'] . 'erro' . $e);
             return $this->addError('forms', 'Ocorreu um erro ao tentar fazer login. Tente novamente.');
 		}

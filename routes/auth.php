@@ -9,6 +9,7 @@ Route::middleware('guest')->group(function () {
     Route::view('login', 'scheduling.auth.login')->name('login');
     Route::view('esqueci-senha', 'scheduling.auth.forgot-password')->name('forgot-password');
     Route::view('resetar-senha/{token}', 'scheduling.auth.reset-password')->name('password.reset');
+    Route::middleware('web')->get('auth/oauth2/google/redirect/{token}', [AuthProvidersController::class, 'redirectAuthTenant'])->name('googleRedirectAuth');
 });
 
 Route::middleware('web')->get('oauth2/google', [AuthProvidersController::class, 'googleAuth'])->name('google');
