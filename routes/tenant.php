@@ -30,10 +30,6 @@ Route::middleware([
 
     Route::get('/auth/redirect/{token}', [AuthProvidersController::class, 'authTenant'])->name('auth-redirect');
 
-    Route::get('/completar-perfil', function () {
-        return view('scheduling.auth.complete-profile');
-    })->name('complete-profile');
-
     Route::middleware(['auth', 'web'])->group(function () {
         Route::view('dashboard', 'scheduling.dashboard.dashboard')->name('dashboard');
         Route::view('usuarios', 'scheduling.users.users')->name('users');
@@ -42,6 +38,5 @@ Route::middleware([
         Route::view('produtos', 'scheduling.catalog.products')->name('products');
         Route::view('procedimentos', 'scheduling.catalog.procedures')->name('procedures');
         Route::view('perfil', 'scheduling.profile.profile')->name('configuration');
-        Route::view('meu-link', 'scheduling.business.business')->name('link-business');
     });
 });

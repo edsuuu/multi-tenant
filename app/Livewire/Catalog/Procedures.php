@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Scheduling\Catalog;
+namespace App\Livewire\Catalog;
 
 use App\Models\ProcedureCategory;
 use App\Models\Procedures as ProceduresModel;

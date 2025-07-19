@@ -10,6 +10,8 @@ use Stancl\Tenancy\Database\Models\Domain;
 class Tenant extends BaseTenant
 {
     use HasDomains;
+    use \OwenIt\Auditing\Auditable;
+
 
     protected $fillable = [
         'main_user_id',

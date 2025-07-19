@@ -18,19 +18,19 @@
                 </div>
             </a>
             @if(auth()->user()->tenant)
-                <a href="{{ route('products') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
-                    <div class="flex flex-row gap-2 items-center p-2">
-                        <x-heroicon-o-shopping-cart class="w-6 h-6"/>
-                        <span class="">Produtos </span>
-                    </div>
-                </a>
+{{--                <a href="{{ route('products') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">--}}
+{{--                    <div class="flex flex-row gap-2 items-center p-2">--}}
+{{--                        <x-heroicon-o-shopping-cart class="w-6 h-6"/>--}}
+{{--                        <span class="">Produtos </span>--}}
+{{--                    </div>--}}
+{{--                </a>--}}
 
-                <a href="{{ route('procedures') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
-                    <div class="flex flex-row gap-2 items-center p-2">
-                        <x-heroicon-o-tag class="w-6 h-6"/>
-                        <span class="">Procedimentos </span>
-                    </div>
-                </a>
+{{--                <a href="{{ route('procedures') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">--}}
+{{--                    <div class="flex flex-row gap-2 items-center p-2">--}}
+{{--                        <x-heroicon-o-tag class="w-6 h-6"/>--}}
+{{--                        <span class="">Procedimentos </span>--}}
+{{--                    </div>--}}
+{{--                </a>--}}
             @endif
 
             <a href="{{ route('users') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('users') ? 'bg-blue-link' : '' }}">
@@ -40,7 +40,7 @@
                 </div>
             </a>
 
-            @if(!auth()->user()->tenant)
+            @if(auth()->user()->tenant === null)
                 <a href="{{ route('tenants') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('tenants') ? 'bg-blue-link' : '' }}">
                     <div class="flex flex-row gap-2 items-center p-2">
                         <x-heroicon-o-tag class="w-6 h-6"/>

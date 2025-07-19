@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Scheduling\Catalog\Components\Product;
+namespace App\Livewire\Catalog\Components\Product;
 
 use App\Models\ProductCategory;
 use App\Models\Products;

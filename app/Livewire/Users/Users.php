@@ -8,7 +8,6 @@ use Livewire\Component;
 
 class Users extends Component
 {
-
     #[Url('uuid')]
     public $tenantId;
 
@@ -22,11 +21,10 @@ class Users extends Component
         $users = User::query()
             ->with('tenant')
             ->where(function ($query) {
+                // escopar as consultas por permissoes
                 if (auth()->user()->tenant) {
                     $query->where('tenant_id', auth()->user()->tenant->id);
-                }
-
-                if (auth()->user()->tenant === null) {
+                } else if (auth()->user()->tenant === null) {
                     if ($this->tenantId) {
                         $query->where('tenant_id', $this->tenantId);
                     }
@@ -34,6 +32,7 @@ class Users extends Component
                     $query->where('tenant_id', null);
                 }
             })->orderBy('name');
+
 
         return $users;
     }

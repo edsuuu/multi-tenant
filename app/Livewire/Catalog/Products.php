@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Livewire\Scheduling\Catalog;
+namespace App\Livewire\Catalog;
 
 use App\Models\ProductCategory;
+use App\Models\Products as ProductsBusiness;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use App\Models\Products as ProductsBusiness;
 use Livewire\WithPagination;
 
 class Products extends Component
