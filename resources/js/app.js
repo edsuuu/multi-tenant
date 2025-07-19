@@ -50,3 +50,38 @@ function documentMask(value) {
         }
     }
 }
+
+
+function openWhatsApp() {
+    const phoneNumber = '5511999999999';
+    const message = 'Olá! Gostaria de agendar um horário no Estúdio Body Piercing.';
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+}
+
+function openInstagram() {
+    const instagram = 'studiopiercing_itapevi';
+    window.open(`https://instagram.com/${instagram}`, '_blank');
+}
+
+function openFacebook() {
+    const facebook = 'studiopiercing.itapevi';
+    window.open(`https://facebook.com/${facebook}`, '_blank');
+}
+
+function openYouTube() {
+    const youtube = 'studiopiercing_itapevi';
+    window.open(`https://youtube.com/@${youtube}`, '_blank');
+}
+
+function openTikTok() {
+    const tiktok = 'studiopiercing_itapevi';
+    window.open(`https://tiktok.com/@${tiktok}`, '_blank');
+}
+
+document.addEventListener('touchmove', function(e) {
+    if (e.target.closest('.mobile-content')) {
+        return;
+    }
+    e.preventDefault();
+}, { passive: false });

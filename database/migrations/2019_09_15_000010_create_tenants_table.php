@@ -25,6 +25,7 @@ class CreateTenantsTable extends Migration
             $table->string('city')->nullable();
             $table->string('neighborhood')->nullable();
             $table->string('number', 10)->nullable();
+            $table->string('complement', 10)->nullable();
             $table->string('uf', 2)->nullable();
             $table->json('data')->nullable();
             $table->timestamps();

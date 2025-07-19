@@ -1,11 +1,11 @@
 <div class="flex flex-col gap-5 h-screen">
-    <div class="flex flex-row items-center gap-4 p-4">
+    <a href="{{ route('home-tenant') }}" class="flex flex-row items-center gap-4 p-4">
         <div class="bg-black p-2 rounded-md">
             <x-heroicon-m-computer-desktop class="w-5 h-5 text-white"/>
         </div>
 
         <span class="font-semibold text-white truncate">{{ auth()->user()->tenant?->name ?? 'Administrador' }}</span>
-    </div>
+    </a>
 
     <div class="flex-1 overflow-y-auto pr-1 pb-5 cst-scrollbar">
         <div class="flex flex-col gap-2 px-2">

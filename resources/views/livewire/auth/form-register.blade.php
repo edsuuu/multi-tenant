@@ -22,7 +22,7 @@
                 <div class="col-span-12 md:col-span-6">
                     <x-input
                         name="name"
-                        label="Nome nome"
+                        label="Nome"
                         type="text"
                         required="true"
                         placeholder="Nome completo do responsável"

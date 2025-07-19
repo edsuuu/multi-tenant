@@ -14,7 +14,7 @@
 <body>
 
 @include('layout.navbar-auth-mobile')
-
+@livewire('modal')
 <div class="flex flex-col lg:flex-row">
     @include('layout.navbar-auth-desktop')
     <main class="flex-1 lg:pl-64">
