@@ -214,77 +214,88 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
-        // Gráfico de Uso
-        const usageCtx = document.getElementById('usageChart').getContext('2d');
-        new Chart(usageCtx, {
-            type: 'line',
-            data: {
-                labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-                datasets: [{
-                    label: 'Usuários Ativos',
-                    data: [1200, 1900, 3000, 2500, 2200, 1800, 2400],
-                    borderColor: 'rgb(59, 130, 246)',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.1)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
+        function initCharts() {
+            if (window.usageChartInstance) window.usageChartInstance.destroy();
+            if (window.planChartInstance) window.planChartInstance.destroy();
 
-        // Gráfico de Planos
-        const planCtx = document.getElementById('planChart').getContext('2d');
-        new Chart(planCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Básico', 'Plus', 'Premium'],
-                datasets: [{
-                    data: [45, 35, 20],
-                    backgroundColor: [
-                        'rgba(156, 163, 175, 0.8)',
-                        'rgba(59, 130, 246, 0.8)',
-                        'rgba(147, 51, 234, 0.8)'
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 10,
-                            usePointStyle: true,
-                            font: {
-                                size: 12
+            const usageEl = document.getElementById('usageChart');
+            const planEl = document.getElementById('planChart');
+
+            if (usageEl && planEl) {
+                const usageCtx = usageEl.getContext('2d');
+                window.usageChartInstance = new Chart(usageCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+                        datasets: [{
+                            label: 'Usuários Ativos',
+                            data: [1200, 1900, 3000, 2500, 2200, 1800, 2400],
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
                             }
                         }
                     }
-                }
+                });
+
+                const planCtx = planEl.getContext('2d');
+                window.planChartInstance = new Chart(planCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Básico', 'Plus', 'Premium'],
+                        datasets: [{
+                            data: [45, 35, 20],
+                            backgroundColor: [
+                                'rgba(156, 163, 175, 0.8)',
+                                'rgba(59, 130, 246, 0.8)',
+                                'rgba(147, 51, 234, 0.8)'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 10,
+                                    usePointStyle: true,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
             }
-        });
+        }
+
+        document.addEventListener('livewire:load', initCharts);
+        document.addEventListener('livewire:navigated', initCharts);
     </script>
 </x-app-layout>
