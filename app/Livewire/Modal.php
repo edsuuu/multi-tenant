@@ -10,12 +10,6 @@ class Modal extends Component
     public array $components;
     public ?string $activeUuidComponent;
 
-    public function resetState(): void
-    {
-        $this->components = [];
-        $this->activeUuidComponent = null;
-    }
-
     #[On('OpenModalComponent')]
     public function openModal(string $component, array $arguments = []): void
     {
@@ -33,25 +27,34 @@ class Modal extends Component
     }
 
     #[On('CloseModalComponent')]
-    public function closeModal(): void
+    public function closeModal($events = []): void
     {
+        $this->dispatchModalEvents($events);
+
         if ($this->activeUuidComponent) {
             $this->destroyComponent($this->activeUuidComponent);
             $this->activeUuidComponent = null;
         }
 
-
         $this->dispatch('close-modal');
     }
 
-    private function dispatchModalEvents()
+    private function dispatchModalEvents($events): void
     {
+        foreach ($events as $event) {
+//            if (is_array($event)) {
+//                $this->dispatch($event, reset($event));
+//            }
 
+            $this->dispatch($event);
+        }
     }
 
     private function destroyComponent($id): void
     {
         unset($this->components[$id]);
+        $this->components = [];
+        $this->activeUuidComponent = null;
     }
 
     public function render()

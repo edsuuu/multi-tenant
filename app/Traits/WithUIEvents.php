@@ -10,18 +10,17 @@ use Livewire\Component;
 
 trait WithUIEvents
 {
-    public const EventModalRight = 'OpenModalComponent';
-
-
+    public const EventOpenModalRight = 'OpenModalComponent';
+    public const EventCloseModalRight = 'CloseModalComponent';
 
     private static function openModalRight(Component $livewireInstance, string $component, array $arguments = []): void
     {
-        $livewireInstance->dispatch(self::EventModalRight, component: $component, arguments: $arguments);
+        $livewireInstance->dispatch(self::EventOpenModalRight, component: $component, arguments: $arguments);
     }
 
-    private static function closeModalRight(): void
+    private static function closeModalRight(Component $livewireInstance, $events = []): void
     {
-
+        $livewireInstance->dispatch(self::EventCloseModalRight, events: $events);
     }
 
 }

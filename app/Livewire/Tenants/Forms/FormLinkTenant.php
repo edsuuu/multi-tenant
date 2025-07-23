@@ -4,10 +4,13 @@ namespace App\Livewire\Tenants\Forms;
 
 use App\Models\Tenant;
 use App\Services\CepFinderService;
+use App\Traits\WithUIEvents;
 use Livewire\Component;
 
 class FormLinkTenant extends Component
 {
+    use WithUIEvents;
+
     public $tenant;
     public $titleTenant, $since, $description = '', $whatsapp, $instagram, $facebook, $youtube, $tiktok;
 
@@ -22,23 +25,23 @@ class FormLinkTenant extends Component
     ];
 
     public array $days = [
-        'segunda'    => false,
-        'terça'   => false,
+        'segunda' => false,
+        'terça' => false,
         'quarta' => false,
-        'quinta'  => false,
-        'sexta'    => false,
-        'sábado'  => false,
-        'domingo'    => false,
+        'quinta' => false,
+        'sexta' => false,
+        'sábado' => false,
+        'domingo' => false,
     ];
 
     public array $hours = [
-        'segunda'    => ['start' => '', 'end' => ''],
-        'terça'   => ['start' => '', 'end' => ''],
+        'segunda' => ['start' => '', 'end' => ''],
+        'terça' => ['start' => '', 'end' => ''],
         'quarta' => ['start' => '', 'end' => ''],
-        'quinta'  => ['start' => '', 'end' => ''],
-        'sexta'    => ['start' => '', 'end' => ''],
-        'sábado'  => ['start' => '', 'end' => ''],
-        'domingo'    => ['start' => '', 'end' => ''],
+        'quinta' => ['start' => '', 'end' => ''],
+        'sexta' => ['start' => '', 'end' => ''],
+        'sábado' => ['start' => '', 'end' => ''],
+        'domingo' => ['start' => '', 'end' => ''],
     ];
 
     public function mount($tenantId)
@@ -76,7 +79,7 @@ class FormLinkTenant extends Component
                     if (isset($tenant->hours[$dia])) {
                         $this->hours[$dia] = [
                             'start' => $tenant->hours[$dia]['start'] ?? '',
-                            'end'   => $tenant->hours[$dia]['end'] ?? '',
+                            'end' => $tenant->hours[$dia]['end'] ?? '',
                         ];
                     }
                 }
@@ -86,22 +89,22 @@ class FormLinkTenant extends Component
 
     public function updated($propertyName)
     {
-        if($propertyName === 'address.zip_code') {
+        if ($propertyName === 'address.zip_code') {
             $address = CepFinderService::getAddress($this->address['zip_code']);
 
             if (!$address) {
                 return $this->addError('address.zip_code', 'Cep inválido');
             }
 
-            $this->address['zip_code']     = $address['cep'];
-            $this->address['street']       = $address['street'];
+            $this->address['zip_code'] = $address['cep'];
+            $this->address['street'] = $address['street'];
             $this->address['neighborhood'] = $address['neighborhood'];
-            $this->address['city']         = $address['city'];
-            $this->address['uf']           = $address['state'];
+            $this->address['city'] = $address['city'];
+            $this->address['uf'] = $address['state'];
         }
     }
 
-    public function save()
+    public function save(): void
     {
         $validate = $this->validate([
             'titleTenant' => 'required',
@@ -197,8 +200,7 @@ class FormLinkTenant extends Component
                 'uf' => $this->address['uf'],
             ]);
 
-
-//        $this->dispatch('closeModalTenant');
+        self::closeModalRight($this, ['refreshTenantLinkMain']);
     }
 
     public function render()
