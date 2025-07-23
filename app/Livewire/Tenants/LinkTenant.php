@@ -18,11 +18,12 @@ class LinkTenant extends Component
 
     public function mount($uuidTenant)
     {
+        $this->uuid = $uuidTenant;
+
         if (auth()->check()) {
             $this->openLateralEdit = true;
         }
 
-        $this->uuid = $uuidTenant;
         $this->getInfoTenant();
     }
 
@@ -35,7 +36,7 @@ class LinkTenant extends Component
 
         $address = $this->tenant?->address ? str_replace(' ', '+', $this->tenant?->address) : "";
         $city = $this->tenant?->city ? str_replace(' ', '+', $this->tenant?->city) : "";
-        $this->qString =  "{$address},+{$this->tenant?->number}+-+{$city}+{$this->tenant?->uf},+{$this->tenant?->zipCode}";
+        $this->qString = "{$address},+{$this->tenant?->number}+-+{$city}+{$this->tenant?->uf},+{$this->tenant?->zipCode}";
 
         $orderedDays = collect([
             'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo'

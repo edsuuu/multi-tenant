@@ -10,10 +10,6 @@ class Tenants extends Component
 {
     use WithPagination;
 
-    public function mount()
-    {
-    }
-
     public function getTenants()
     {
         return Tenant::query()
