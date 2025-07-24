@@ -5,14 +5,15 @@ namespace App\Livewire\Tenants\Forms;
 use App\Models\Tenant;
 use App\Services\CepFinderService;
 use App\Traits\WithUIEvents;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
-
+use Livewire\WithFileUploads;
 class FormLinkTenant extends Component
 {
-    use WithUIEvents;
+    use WithUIEvents, WithFileUploads;
 
     public $tenant;
-    public $titleTenant, $since, $description = '', $whatsapp, $instagram, $facebook, $youtube, $tiktok;
+    public $logoFile, $titleTenant, $since, $description = '', $whatsapp, $instagram, $facebook, $youtube, $tiktok;
 
     public array $address = [
         'zip_code' => '',
@@ -52,6 +53,7 @@ class FormLinkTenant extends Component
 
         if ($tenant) {
             $this->tenant = $tenant;
+            $this->logoFile = $tenant->logo;
             $this->titleTenant = $tenant->title;
             $this->since = $tenant->since;
             $this->description = $tenant->description;
@@ -126,7 +128,8 @@ class FormLinkTenant extends Component
             'days.*' => 'boolean',
             'hours' => 'required|array',
             'hours.*.start' => 'required_if:days.*,true|date_format:H:i',
-            'hours.*.end' => 'required_if:days.*,true|date_format:H:i|after:hours.*.start'
+            'hours.*.end' => 'required_if:days.*,true|date_format:H:i|after:hours.*.start',
+            'logoFile' => 'sometimes|nullable|image|max:4024',
         ], [
             'required' => 'Obrigatorio',
             'url' => 'URL inválida',
@@ -174,33 +177,43 @@ class FormLinkTenant extends Component
             'days.domingo.*' => 'Domingo',
         ]);
 
-        $data = [
-            'title' => $validate['titleTenant'],
-            'since' => $validate['since'],
-            'description' => $validate['description'],
-            'whatsapp' => $validate['whatsapp'],
-            'instagram' => $validate['instagram'],
-            'facebook' => $validate['facebook'],
-            'youtube' => $validate['youtube'],
-            'tiktok' => $validate['tiktok'],
-            'days' => $validate['days'],
-            'hours' => $validate['hours'],
-        ];
+        try {
+            $path = $validate['logoFile']->store('logos', 's3');
 
-        Tenant::query()
-            ->where('id', $this->tenant->id)
-            ->update([
-                'data' => $data,
-                'zip_code' => $this->address['zip_code'],
-                'address' => $this->address['street'],
-                'neighborhood' => $this->address['neighborhood'],
-                'number' => $this->address['number'],
-                'city' => $this->address['city'],
-                'complement' => $this->address['complement'] ?? null,
-                'uf' => $this->address['uf'],
-            ]);
+            $data = [
+                'title' => $validate['titleTenant'],
+                'since' => $validate['since'],
+                'description' => $validate['description'],
+                'whatsapp' => $validate['whatsapp'],
+                'instagram' => $validate['instagram'],
+                'facebook' => $validate['facebook'],
+                'youtube' => $validate['youtube'],
+                'tiktok' => $validate['tiktok'],
+                'days' => $validate['days'],
+                'hours' => $validate['hours'],
+                'path' => $path,
+            ];
 
-        self::closeModalRight($this, ['refreshTenantLinkMain']);
+            Tenant::query()
+                ->where('id', $this->tenant->id)
+                ->update([
+                    'data' => $data,
+                    'zip_code' => $this->address['zip_code'],
+                    'address' => $this->address['street'],
+                    'neighborhood' => $this->address['neighborhood'],
+                    'number' => $this->address['number'],
+                    'city' => $this->address['city'],
+                    'complement' => $this->address['complement'] ?? null,
+                    'uf' => $this->address['uf'],
+                ]);
+
+            self::closeModalRight($this, ['refreshTenantLinkMain']);
+
+        } catch (\Exception $e) {
+            Log::channel('daily')->info($e);
+            // add erro no front
+        }
+
     }
 
     public function render()

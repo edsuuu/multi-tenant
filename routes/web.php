@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthProvidersController;
+use App\Services\ImageS3;
 use Illuminate\Support\Facades\Route;
 
 foreach (config('tenancy.central_domains') as $domain) {
@@ -18,5 +19,6 @@ foreach (config('tenancy.central_domains') as $domain) {
         });
     });
 
+    Route::get('image/{path}/{id}', [ImageS3::class, 'handle'])->name('image-s3');
     Route::post('logout', [AuthProvidersController::class, 'logout'])->name('logout');
 }

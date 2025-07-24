@@ -16,8 +16,8 @@
             <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
                 <div class="lg:col-span-3 flex flex-col items-center justify-center text-center">
                     <div
-                        class="w-24 h-24 lg:w-32 lg:h-32 rounded-full overflow-hidden border border-white/30 shadow-md mb-3">
-                        <img src="https://tatuagem.com.br/wp-content/uploads/2022/10/logo-joia.png" alt="Logo Piercing"
+                        class="w-24 h-24 lg:w-32 lg:h-32 rounded-full overflow-hidden  shadow-md mb-3">
+                        <img src="{{  url('image/' . $tenant->path) }}" alt="Logo"
                              class="w-full h-full object-cover">
                     </div>
 

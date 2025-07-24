@@ -4,14 +4,13 @@
     <form method="POST" wire:submit.prevent="save" class="flex flex-col gap-2" >
         @csrf
         <div class="grid grid-cols-12 gap-4 overflow-y-auto">
-
-
             <div class="col-span-12">
                 <div x-data="{ imagePreview: null }" class="flex flex-col items-start gap-4">
                     <input
                         id="file_input"
                         type="file"
                         accept="image/*"
+                        wire:model="logoFile"
                         @change="const file = $event.target.files[0];
                                 if (file) {
                                     const reader = new FileReader();
@@ -24,6 +23,9 @@
                     <template x-if="imagePreview">
                         <img :src="imagePreview" alt="Preview da Imagem" class="rounded shadow max-w-[200px] max-h-[200px] border mt-2"/>
                     </template>
+                    @error('logoFile')
+                        <span class="text-sm text-red-600">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
@@ -74,7 +76,8 @@
                     <span class="text-red-500 text-[13px]">{{ $message }}</span>
                     @enderror
 
-                    <small>Caracteres <span x-text="description.length"></span> / 150</small>
+                    <small>Caracteres <span x-text="description ? description.length : 0"></span> / 150</small>
+
                 </div>
             </div>
 
