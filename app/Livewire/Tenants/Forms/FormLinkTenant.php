@@ -13,7 +13,7 @@ class FormLinkTenant extends Component
     use WithUIEvents, WithFileUploads;
 
     public $tenant;
-    public $logoFile, $titleTenant, $since, $description = '', $whatsapp, $instagram, $facebook, $youtube, $tiktok;
+    public $logoFile, $logoUrl, $titleTenant, $since, $description = '', $whatsapp, $instagram, $facebook, $youtube, $tiktok;
 
     public array $address = [
         'zip_code' => '',
@@ -53,7 +53,7 @@ class FormLinkTenant extends Component
 
         if ($tenant) {
             $this->tenant = $tenant;
-            $this->logoFile = $tenant->logo;
+            $this->logoUrl = $tenant->path;
             $this->titleTenant = $tenant->title;
             $this->since = $tenant->since;
             $this->description = $tenant->description;
@@ -106,7 +106,7 @@ class FormLinkTenant extends Component
         }
     }
 
-    public function save(): void
+    public function save()
     {
         $validate = $this->validate([
             'titleTenant' => 'required',
@@ -178,7 +178,7 @@ class FormLinkTenant extends Component
         ]);
 
         try {
-            $path = $validate['logoFile']->store('logos', 's3');
+            $path = isset($validate['logoFile']) ? $validate['logoFile']->store('logos', 's3') : $this->logoUrl;;
 
             $data = [
                 'title' => $validate['titleTenant'],
@@ -211,7 +211,7 @@ class FormLinkTenant extends Component
 
         } catch (\Exception $e) {
             Log::channel('daily')->info($e);
-            // add erro no front
+            return $this->addError('form', 'Ocorreu um erro ao salvar');
         }
 
     }

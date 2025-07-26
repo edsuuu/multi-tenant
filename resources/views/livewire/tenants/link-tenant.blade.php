@@ -69,10 +69,10 @@
                         @endif
                     </div>
 
-                    <div
+                    <a href="{{ route('schedule') }}" wire:navigate
                         class="bg-blue-500 hover:bg-blue-600 rounded-md inline-flex p-2 px-5 cursor-pointer transition-colors mt-2">
                         <span class="text-white font-medium">Fazer um agendamento</span>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="lg:col-span-2 glass rounded-2xl p-4 hover:bg-white/15 transition-all duration-300">
