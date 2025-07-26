@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            @error('form')
+            @error('forms')
                  <span class="col-span-12 text-red-500 text-[13px] my-1 block">{{ $message }}</span>
             @enderror
 

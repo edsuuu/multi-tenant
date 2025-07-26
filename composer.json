@@ -18,6 +18,7 @@
         "livewire/livewire": "^3.5",
         "opcodesio/log-viewer": "^3.14",
         "owen-it/laravel-auditing": "^14.0",
+        "spatie/laravel-permission": "^6.21",
         "stancl/tenancy": "^3.9"
     },
     "require-dev": {

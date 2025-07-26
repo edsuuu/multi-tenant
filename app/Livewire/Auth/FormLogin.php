@@ -33,30 +33,20 @@ class FormLogin extends Component
 		$remember = $this->remember;
 
 		try {
-			$user = User::query()
+            $user = User::query()
                 ->with(['tenant.domain'])
                 ->where('email', $validatedData['email'])
                 ->first();
 
-			if (!$user) {
-				return $this->addError('email', 'Conta não encontrada.');
-			}
-
-			if (!Hash::check($validatedData['password'], $user->password)) {
-				return $this->addError('password', 'Senha inválida.');
-			}
-
-            if (!$user->tenant) {
-                Auth::login($user, true);
-                return redirect()->route('dashboard');
+            if (!$user) {
+                return $this->addError('email', 'Usuário ou senha inválida.');
             }
-            // colocar validacao de user ativo e tenant ativo, ip, envio de email log  de auth
 
-            $baseDomain = config('app.base_domain');
+            if (!Hash::check($validatedData['password'], $user->password)) {
+                return $this->addError('password', 'Usuário ou senha inválida.');
+            }
 
-            $token = encrypt(['user_id' => $user->id, 'expires' => now()->addMinutes(), 'remember' => true]);
-
-            return redirect(tenant_route("{$user->tenant->domain->domain}.{$baseDomain}", 'auth-redirect', ['token' => $token]));
+            return AuthProvidersController::login($user->id, $user->tenant?->domain->domain, $remember);
         } catch (\Exception $e) {
             Log::channel('daily')->error('Erro ao tentar fazer login em uma conta: email ' . $validatedData['email'] . 'erro' . $e);
             return $this->addError('forms', 'Ocorreu um erro ao tentar fazer login. Tente novamente.');

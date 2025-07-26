@@ -17,6 +17,17 @@ class AuthProvidersController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
+    public static function login($userId, $domain, $remember = false)
+    {
+        if ($domain === null) {
+            $user = User::find($userId);
+            Auth::login($user, $remember);
+            return redirect()->route('dashboard');
+        }
+
+        return (new self())->redirectTenant($userId, $domain);
+    }
+
     public function authTenant($token): ?\Illuminate\Http\RedirectResponse
     {
         try {
@@ -47,6 +58,7 @@ class AuthProvidersController extends Controller
             $userDB = User::query()
                 ->with(['tenant.domain'])
                 ->where('email', $googleUser->user['email'])
+                ->orWhere('google_id', $googleUser->user['id'])
                 ->first();
 
             if (!$userDB) {
@@ -81,7 +93,6 @@ class AuthProvidersController extends Controller
     public function redirectAuthTenant($token)
     {
         $data = decrypt($token);
-
 
         if (now()->gt($data['expires'])) {
             session()->flash('error', 'Erro ao tentar autenticar');
