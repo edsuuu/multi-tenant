@@ -18,19 +18,58 @@
                 </div>
             </a>
             @if(auth()->user()->tenant)
-{{--                <a href="{{ route('products') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">--}}
-{{--                    <div class="flex flex-row gap-2 items-center p-2">--}}
-{{--                        <x-heroicon-o-shopping-cart class="w-6 h-6"/>--}}
-{{--                        <span class="">Produtos </span>--}}
-{{--                    </div>--}}
-{{--                </a>--}}
+                <a href="#" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+                    <div class="flex flex-row gap-2 items-center p-2">
+                        <x-heroicon-o-shopping-cart class="w-6 h-6"/>
+                        <span class="">Agendamentos </span>
+                    </div>
+                </a>
 
-{{--                <a href="{{ route('procedures') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">--}}
-{{--                    <div class="flex flex-row gap-2 items-center p-2">--}}
-{{--                        <x-heroicon-o-tag class="w-6 h-6"/>--}}
-{{--                        <span class="">Procedimentos </span>--}}
-{{--                    </div>--}}
-{{--                </a>--}}
+                <a href="#" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+                    <div class="flex flex-row gap-2 items-center p-2">
+                        <x-heroicon-o-shopping-cart class="w-6 h-6"/>
+                        <span class="">Produtos </span>
+                    </div>
+                </a>
+
+                <a href="#" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+                    <div class="flex flex-row gap-2 items-center p-2">
+                        <x-heroicon-o-tag class="w-6 h-6"/>
+                        <span class="">Procedimentos </span>
+                    </div>
+                </a>
+
+                <a href="#" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+                    <div class="flex flex-row gap-2 items-center p-2">
+                        <x-heroicon-o-shopping-cart class="w-6 h-6"/>
+                        <span class="">Clientes </span>
+                    </div>
+                </a>
+
+
+                <a href="#" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+                    <div class="flex flex-row gap-2 items-center p-2">
+                        <x-heroicon-o-shopping-cart class="w-6 h-6"/>
+                        <span class="">Relatorios (opcao) </span>
+                    </div>
+                </a>
+
+            <h1>Fincanceiro abaixo</h1>
+                <a href="#" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+                    <div class="flex flex-row gap-2 items-center p-2">
+                        <x-heroicon-o-shopping-cart class="w-6 h-6"/>
+                        <span class="">Despesas </span>
+                    </div>
+                </a>
+                <a href="#" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('home') && !request('status') ? 'bg-blue-link' : '' }}">
+                    <div class="flex flex-row gap-2 items-center p-2">
+                        <x-heroicon-o-shopping-cart class="w-6 h-6"/>
+                        <span class="">Orçamentos </span>
+                    </div>
+                </a>
+
+
+
             @endif
 
             <a href="{{ route('users') }}" wire:navigate class="text-white rounded-md hover:bg-blue-link transition-all duration-200 {{ request()->routeIs('users') ? 'bg-blue-link' : '' }}">

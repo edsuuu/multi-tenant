@@ -7,11 +7,14 @@
     <div class="min-h-screen w-full">
         <div class="flex flex-col h-screen">
             @if(auth()->user())
-                <button
-                    wire:click="openModalEdit"
-                    class="absolute bg-white rounded-full cursor-pointer p-2 top-4 right-4">
-                    Editar
-                </button>
+                <div class="absolute flex flex-row gap-2 items-center p-2 top-4 right-4">
+                    <a href="{{ route('dashboard') }}" class="text-white hover:underline">Dashboard</a>
+                    <button
+                        wire:click="openModalEdit"
+                        class="bg-white rounded-full cursor-pointer p-2 top-4 right-4">
+                        Editar
+                    </button>
+                </div>
             @endif
             <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
                 <div class="lg:col-span-3 flex flex-col items-center justify-center text-center">

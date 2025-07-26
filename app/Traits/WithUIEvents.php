@@ -10,8 +10,8 @@ use Livewire\Component;
 
 trait WithUIEvents
 {
-    public const EventOpenModalRight = 'OpenModalComponent';
-    public const EventCloseModalRight = 'CloseModalComponent';
+    private const EventOpenModalRight = 'OpenModalComponent';
+    private const EventCloseModalRight = 'CloseModalComponent';
 
     private static function openModalRight(Component $livewireInstance, string $component, array $arguments = []): void
     {
