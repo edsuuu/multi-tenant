@@ -41,7 +41,7 @@ class AuthProvidersController extends Controller
             $user = User::findOrFail($data['user_id']);
             Auth::login($user, $data['remember']);
 
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard_tenant');
         } catch (DecryptException $e) {
             Log::error($e);
             return redirect()->route('home');

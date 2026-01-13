@@ -33,7 +33,7 @@ Route::middleware([
     });
 
     Route::middleware(['auth', 'web'])->group(function () {
-        Route::view('dashboard', 'scheduling.dashboard.dashboard')->name('dashboard');
+        Route::view('dashboard', 'scheduling.dashboard.dashboard')->name('dashboard_tenant');
         Route::view('usuarios', 'scheduling.users.users')->name('users');
         Route::view('produtos', 'scheduling.catalog.products')->name('products');
         Route::view('procedimentos', 'scheduling.catalog.procedures')->name('procedures');
